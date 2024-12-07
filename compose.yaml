@@ -1,0 +1,6 @@
+﻿services:
+  adventofcode2024.day01:
+    image: adventofcode2024.day01
+    build:
+      context: .
+      dockerfile: AdventOfCode2024.Day01/Dockerfile
