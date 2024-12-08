@@ -4,3 +4,9 @@
     build:
       context: .
       dockerfile: AdventOfCode2024.Day01/Dockerfile
+
+  adventofcode2024.day02:
+    image: adventofcode2024.day02
+    build:
+      context: .
+      dockerfile: AdventOfCode2024.Day02/Dockerfile
