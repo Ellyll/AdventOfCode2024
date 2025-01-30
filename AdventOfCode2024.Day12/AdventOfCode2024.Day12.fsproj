@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Day12_A.fs" />
+        <Compile Include="Program.fs"/>
+        <Content Include="Data\Day12_data_test.txt" />
+    </ItemGroup>
+
+</Project>
