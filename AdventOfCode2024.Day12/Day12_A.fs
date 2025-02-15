@@ -11,6 +11,13 @@ let run () =
     let width = lines[0] |> String.length
     let height = lines |> Array.length
 
+    let directions = [
+            1,0 // N
+            0,1 // E
+            -1,0 // S
+            0,-1 // W
+        ]
+    
     let data =
         Array2D.init height width (fun r c -> lines[r][c])
       
@@ -22,12 +29,6 @@ let run () =
         state
     
     let getConnected plantType (r,c) regions data =
-        let directions = [
-            1,0 // N
-            0,1 // E
-            -1,0 // S
-            0,-1 // W
-        ]
         let rec loop connected (rCurr,cCurr) =
             let nextLocations =
                 directions
@@ -35,19 +36,17 @@ let run () =
                 |> List.filter (fun (rn,cn) ->
                     rn >= 0 && rn < Array2D.length1 data &&
                     cn >= 0 && cn < Array2D.length2 data &&
+                    data[rn,cn] = plantType &&
                     (not <| Set.contains (rn,cn) connected) &&
                     (not <| List.exists (fun (_,rgn) ->
                         Set.contains (rn,cn) rgn
                         ) regions)                   
-                    )
-
+                    )           
             nextLocations
             |> List.fold (fun locations (rn,cn) ->
-                // do stuffs recursively
-                locations
-                ) []
-        // do stuffs
-        Set.empty
+                loop (locations |> Set.add (rn,cn)) (rn,cn)
+                ) connected
+        loop (Set.singleton (r,c)) (r,c)
     
     let getRegions data  =
         data
@@ -65,11 +64,36 @@ let run () =
             else
                 regions
             ) []
+        |> List.rev
+    
+    let calcPerimeter (plantType,locations) data =
+        locations
+        |> Set.fold (fun perimeter (r,c) ->
+            let p =
+                directions
+                |> List.fold (fun total (rd,cd) ->
+                    let rn, cn = r+rd, c+cd
+                    if rn >= 0 && rn < Array2D.length1 data &&
+                       cn >= 0 && cn < Array2D.length2 data &&
+                       data[rn,cn] = plantType then
+                           total
+                    else
+                        total + 1
+                    ) 0
+            perimeter + p
+            ) 0
         
     let regions = getRegions data
-        
-    
-    //printfn $"Day 12 Part 1:- Result: %i{result}"
+
+    let result =
+        regions
+        |> List.fold (fun totalPrice (plantType, locations) ->
+            let perimeter = calcPerimeter (plantType,locations) data
+            let area = locations |> Set.count
+            let price = perimeter * area
+            totalPrice + price
+            ) 0
+
+    printfn $"Day 12 Part 1:- Result: %i{result}"
     
     ()
-
