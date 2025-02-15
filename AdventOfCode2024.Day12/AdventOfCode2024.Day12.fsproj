@@ -7,8 +7,10 @@
 
     <ItemGroup>
         <Compile Include="Day12_A.fs" />
+        <Compile Include="Day12_B.fs" />
         <Compile Include="Program.fs"/>
         <Content Include="Data\Day12_data_test.txt" />
+        <Content Include="Data\Day12_data.txt" />
     </ItemGroup>
 
 </Project>
